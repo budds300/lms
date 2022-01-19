@@ -17,7 +17,7 @@ public class ForgotPassword extends javax.swing.JFrame {
      */
     public ForgotPassword() {
         initComponents();
-        setLocationRelativeTo(null);
+        setLocationRelativeTo(null); // sets the file to the center of the page
     }
 
     /**
@@ -134,20 +134,22 @@ public class ForgotPassword extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        String userName = jTextField1.getText();
+        String userName = jTextField1.getText(); //extracts the data you have keyed in on the username filed
+       // connects mysql database with the project
         try{
          Connection con = ConnectionProvider.getCon();
          Statement rs=con.createStatement();
-         ResultSet rsl=rs.executeQuery("select securityQuestion from registration where username='"+userName+"'");
-         if(rsl.next()){
-             jTextField3.setText(rsl.getString(1));
+         ResultSet rsl=rs.executeQuery("select securityQuestion from registration where username='"+userName+"'");// searches and selects the username as per existing username
+         if(rsl.next()){ // if the existing username is found
+             jTextField3.setText(rsl.getString(1)); //  automatically fill in the questions filed
              
          }
          else
-             JOptionPane.showMessageDialog(null, "Please write correct Username");
+             JOptionPane.showMessageDialog(null, "Please write correct Username"); // brings a message when username is wrong
          con.close();
          rs.close();
         }
+        // Brings back message when something goes wrong
         catch(Exception e){
             System.out.print(e.getMessage());
             JOptionPane.showMessageDialog(null, "Connection Error");
@@ -162,18 +164,20 @@ public class ForgotPassword extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
+        // Gets information of existing data
         String username=jTextField1.getText();
         String newPassword=jPasswordField1.getText();
         String securityQuestion=jTextField3.getText();
         String answer=jTextField4.getText();
-       try{
+       // connects to database
+        try{
            Connection con = ConnectionProvider.getCon();
            Statement st = con.createStatement();
-           ResultSet rs= st.executeQuery("select *from registration where username='"+username+"' and answer='"+answer+"'");
-           if (rs.next()){
-               st.executeUpdate("update registration set password="+newPassword+"' where username='"+username+"'and password='"+newPassword+"'");
+           ResultSet rs= st.executeQuery("select *from registration where username='"+username+"' and answer='"+answer+"'"); //checks if username matches corresponding answer
+           if (rs.next()){ 
+               st.executeUpdate("update registration set password="+newPassword+"' where username='"+username+"'and password='"+newPassword+"'"); // updates new password
                JOptionPane.showMessageDialog(null, "Password successfully updated");
-               dispose();
+               dispose();                             
                new login().setVisible(true);
                
                

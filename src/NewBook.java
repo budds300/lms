@@ -17,7 +17,7 @@ public class NewBook extends javax.swing.JFrame {
      */
     public NewBook() {
         initComponents();
-        setLocationRelativeTo(null);
+        setLocationRelativeTo(null); // sets the form to the center of the form
     }
 
     /**
@@ -135,17 +135,20 @@ public class NewBook extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
+        //extracts the data you have keyed in on the username filed
+        
         String bookID=jTextField1.getText();
         String name=jTextField2.getText();
         String publisher=jTextField3.getText();
         String price=jTextField4.getText();
         String publisherYear=jTextField5.getText();
-        
+        // connects mysql database with the project
         try{
             Connection con = ConnectionProvider.getCon();
             Statement st = con.createStatement();
-            st.executeUpdate("insert into book values('"+bookID+ "','"+ name+ "','"+publisher+"','"+price+"','"+publisherYear+"')");
-            JOptionPane.showMessageDialog(null,"Successfully Updated");
+            st.executeUpdate("insert into book values('"+bookID+ "','"+ name+ "','"+publisher+"','"+price+"','"+publisherYear+"')"); // inserts data filled in the text field to the database
+            JOptionPane.showMessageDialog(null,"Successfully Updated"); // Messege to notify that the process is successfull
+            // refreshes the form
             setVisible(false);
             new NewBook().setVisible(true);
             

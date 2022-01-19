@@ -84,7 +84,6 @@ public class newStudent extends javax.swing.JFrame {
 
         jTextField1.setBackground(new java.awt.Color(255, 255, 204));
         jTextField1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jTextField1.setForeground(new java.awt.Color(255, 255, 153));
         jTextField1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextField1ActionPerformed(evt);
@@ -94,12 +93,10 @@ public class newStudent extends javax.swing.JFrame {
 
         jTextField2.setBackground(new java.awt.Color(255, 255, 204));
         jTextField2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jTextField2.setForeground(new java.awt.Color(255, 255, 153));
         getContentPane().add(jTextField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 160, 186, -1));
 
         jTextField3.setBackground(new java.awt.Color(255, 255, 204));
         jTextField3.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jTextField3.setForeground(new java.awt.Color(255, 255, 153));
         getContentPane().add(jTextField3, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 200, 186, 27));
 
         jButton1.setFont(new java.awt.Font("Segoe Print", 1, 14)); // NOI18N

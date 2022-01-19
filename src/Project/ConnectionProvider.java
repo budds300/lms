@@ -9,11 +9,12 @@ import java.sql.*;
  *
  * @author Givondo
  */
+//This code enables one to connect to mysql database
 public class ConnectionProvider {
     public static Connection getCon(){
         try{
             Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/lms", "root", "Accessdenied1!");
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/lms", "root", "Accessdenied1!"); // the name of the database here is lms and password is access...
             return con;
                 
         }

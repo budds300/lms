@@ -2,7 +2,8 @@ import java.sql.*;
 import Project.ConnectionProvider;
 import java.text.SimpleDateFormat;
 import javax.swing.JOptionPane;
-
+import java.util.Date;
+import java.util.Calendar;
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
@@ -19,7 +20,10 @@ public class Issue extends javax.swing.JFrame {
      */
     public Issue() {
         initComponents();
-        setLocationRelativeTo(null);
+        setLocationRelativeTo(null); // sets form to the center of the page
+        
+        jDateChooser1.getJCalendar().setMinSelectableDate(new Date());
+        jDateChooser2.getJCalendar().setMinSelectableDate(new Date());
     }
 
     /**
@@ -43,6 +47,8 @@ public class Issue extends javax.swing.JFrame {
         jButton2 = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
+        jDateChooser3 = new com.toedter.calendar.JDateChooser();
+        jCalendar1 = new com.toedter.calendar.JCalendar();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setLocation(new java.awt.Point(325, 125));
@@ -104,43 +110,49 @@ public class Issue extends javax.swing.JFrame {
         getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 40, -1, -1));
 
         jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/lms/123456.png"))); // NOI18N
-        getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
+        getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 330, -1, -1));
+        getContentPane().add(jDateChooser3, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 220, -1, -1));
+        getContentPane().add(jCalendar1, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 40, -1, -1));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
-        dispose();
+        dispose(); //closes form
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
+        //gathers all information keyed in the text fields
+         
         SimpleDateFormat dFormat =new SimpleDateFormat("dd-mm-yyyy");
         String bookID = jTextField1.getText();
         String studentID = jTextField2.getText();
+        
         String issueDate = dFormat.format(jDateChooser1.getDate());
         String dueDate = dFormat.format(jDateChooser2.getDate());
         String returnBook = "No";
+        // connects to database
         try{
             Connection con =ConnectionProvider.getCon();
             Statement st = con.createStatement();
-            ResultSet rs = st.executeQuery("Select *from book where bookID='"+bookID+"'"); 
-            if(rs.next()){
-                ResultSet rsl=st.executeQuery("select *from student where studentID='"+studentID+"'");
-                if(rsl.next()){
-                   st.executeUpdate("insert into issue values('"+bookID+"','"+studentID+"','"+issueDate+"','"+returnBook+"','"+dueDate+"')" );
-                   JOptionPane.showConfirmDialog(null,"Book successfully issued");
-                   dispose();
-                   new Issue().setVisible(true);
+            ResultSet rs = st.executeQuery("Select *from book where bookID='"+bookID+"'"); // Goes to the database and selects existing book ID from its table
+            if(rs.next()){ // if the book ID exists then:
+                ResultSet rsl=st.executeQuery("select *from student where studentID='"+studentID+"'");// Goes to the database and selects existing student ID from its table
+                if(rsl.next()){ // if the student ID exists then:
+                   st.executeUpdate("insert into issue values('"+bookID+"','"+studentID+"','"+issueDate+"','"+returnBook+"','"+dueDate+"')" ); // Inserts the data you keyed in to the database
+                   JOptionPane.showConfirmDialog(null,"Book successfully issued"); // Messege deterimnes its successfull
+                   dispose(); // close form
+                   new Issue().setVisible(true); // reopens it (refreshes the file)
                 }   
                 else
-                   JOptionPane.showConfirmDialog(null,"Incorrect Student ID");
+                   JOptionPane.showConfirmDialog(null,"Incorrect Student ID"); // Tells you if user ID does not exist
             }
             else
-                JOptionPane.showConfirmDialog(null,"Incorrect Book ID");
+                JOptionPane.showConfirmDialog(null,"Incorrect Book ID"); // Tells you if user ID does not exist
         }
-        //
+        //Shows up when something goes wrong
         catch(Exception e){
             System.out.println(e.getMessage()); 
             JOptionPane.showConfirmDialog(null,"Connection Error ");
@@ -187,8 +199,10 @@ public class Issue extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private com.toedter.calendar.JCalendar jCalendar1;
     private com.toedter.calendar.JDateChooser jDateChooser1;
     private com.toedter.calendar.JDateChooser jDateChooser2;
+    private com.toedter.calendar.JDateChooser jDateChooser3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

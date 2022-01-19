@@ -154,6 +154,7 @@ public class NewBook extends javax.swing.JFrame {
             
             
         }
+        // tells you when an error occurs
         catch(Exception e){
             System.out.println(e.getMessage());
             JOptionPane.showMessageDialog(null,"Book ID already exists");

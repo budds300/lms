@@ -86,7 +86,7 @@ public class Registration extends javax.swing.JFrame {
         getContentPane().add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 170, 225, -1));
         getContentPane().add(jTextField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 230, 225, -1));
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "What is your mother's maiden name?", "What is your favorite color?" }));
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "What is your mother maiden name?", "What is your favorite color?" }));
         jComboBox1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jComboBox1ActionPerformed(evt);

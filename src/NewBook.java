@@ -142,11 +142,12 @@ public class NewBook extends javax.swing.JFrame {
         String publisher=jTextField3.getText();
         String price=jTextField4.getText();
         String publisherYear=jTextField5.getText();
+        String issued ="No";
         // connects mysql database with the project
         try{
             Connection con = ConnectionProvider.getCon();
             Statement st = con.createStatement();
-            st.executeUpdate("insert into book values('"+bookID+ "','"+ name+ "','"+publisher+"','"+price+"','"+publisherYear+"')"); // inserts data filled in the text field to the database
+            st.executeUpdate("insert into book values('"+bookID+ "','"+ name+ "','"+publisher+"','"+price+"','"+publisherYear+"','"+issued+"')"); // inserts data filled in the text field to the database
             JOptionPane.showMessageDialog(null,"Successfully Updated"); // Messege to notify that the process is successfull
             // refreshes the form
             setVisible(false);

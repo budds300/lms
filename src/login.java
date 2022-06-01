@@ -43,6 +43,8 @@ public class login extends javax.swing.JFrame {
         jPasswordField1 = new javax.swing.JPasswordField();
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
+        jLabel7 = new javax.swing.JLabel();
+        jComboBox1 = new javax.swing.JComboBox<>();
         jLabel6 = new javax.swing.JLabel();
 
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -84,11 +86,13 @@ public class login extends javax.swing.JFrame {
         getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(1070, 600, 117, 39));
 
         jLabel1.setFont(new java.awt.Font("Segoe Print", 1, 24)); // NOI18N
-        jLabel1.setText("User Name");
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel1.setText("User Name/UserID");
         jLabel1.setAlignmentX(325);
-        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(820, 440, 150, 30));
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 440, 240, 30));
 
         jLabel2.setFont(new java.awt.Font("Segoe Print", 1, 24)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("Password");
         jLabel2.setAlignmentX(325);
         getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(820, 550, 130, 30));
@@ -108,6 +112,11 @@ public class login extends javax.swing.JFrame {
         jButton3.setFont(new java.awt.Font("Segoe Print", 1, 14)); // NOI18N
         jButton3.setForeground(new java.awt.Color(0, 0, 255));
         jButton3.setText("Forgot password?");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
         getContentPane().add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(1030, 720, -1, -1));
 
         jButton4.setFont(new java.awt.Font("Segoe Print", 1, 14)); // NOI18N
@@ -120,9 +129,23 @@ public class login extends javax.swing.JFrame {
         });
         getContentPane().add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(1030, 770, 160, -1));
 
+        jLabel7.setFont(new java.awt.Font("Segoe Print", 1, 36)); // NOI18N
+        jLabel7.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel7.setText("LOGIN");
+        getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(930, 280, -1, -1));
+
+        jComboBox1.setFont(new java.awt.Font("Segoe Print", 1, 14)); // NOI18N
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Choose a Role", "Admin", "Librarian", "Student" }));
+        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox1ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(890, 360, 240, 40));
+
         jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/lms/4.jpg"))); // NOI18N
         jLabel6.setText("jLabel6");
-        getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(-520, -560, 2810, 2340));
+        getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(-920, -70, 2810, 2340));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -130,7 +153,36 @@ public class login extends javax.swing.JFrame {
     //performs action instructed by the developer
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        // declares data keyed in the form
+        if (jComboBox1.getSelectedItem().toString().equals("Admin")){
+            if (jTextField1.getText().equals("admin") && jPasswordField1.getText().equals("admin")){
+                dispose();
+                new AdminDash().setVisible(true);
+            }
+        }
+        else if(jComboBox1.getSelectedItem().toString().equals("Student")){
+           String userName = jTextField1.getText();
+           String password = jPasswordField1.getText();
+            try{
+                Connection con = ConnectionProvider.getCon();
+                Statement st = con.createStatement();
+                ResultSet rs= st.executeQuery("select *from studentregister where studentID='"+userName+"' and password='"+password+"'");
+                if(rs.next()){
+
+                    dispose();
+                    new StudentDash(userName).setVisible(true);
+                }
+                
+                else
+                JOptionPane.showMessageDialog(null, "Incorrect Username or password");
+            }
+            catch(Exception e){
+                System.out.println(e.getMessage());
+                JOptionPane.showMessageDialog(null,"Connection error");
+
+            }
+        }
+        else if(jComboBox1.getSelectedItem().toString().equals("Librarian")){
+            // declares data keyed in the form
         String userName = jTextField1.getText();
         String password = jPasswordField1.getText();
         // compares data from the database and what that the user has to confirm similarity
@@ -149,6 +201,11 @@ public class login extends javax.swing.JFrame {
             System.out.println(e.getMessage());
             JOptionPane.showMessageDialog(null,"Error, try again");
         }
+        }
+        else{
+        JOptionPane.showMessageDialog(null,"Pick a role!");
+    }            
+       
         
        
     }//GEN-LAST:event_jButton1ActionPerformed
@@ -167,6 +224,27 @@ public class login extends javax.swing.JFrame {
         // TODO add your handling code here:
         new Registration().setVisible(true); //open registration form
     }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
+        // TODO add your handling code here:
+           if (jComboBox1.getSelectedItem().toString().equals("Admin")){
+            jButton3.setVisible(false);
+            jButton4.setVisible(false);
+        }
+        else if(jComboBox1.getSelectedItem().toString().equals("Student")){
+            jButton3.setVisible(false);
+            jButton4.setVisible(false);
+        }
+        else {
+            jButton3.setVisible(true);
+            jButton4.setVisible(true);
+        }
+    }//GEN-LAST:event_jComboBox1ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+ 
+    }//GEN-LAST:event_jButton3ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -208,12 +286,14 @@ public class login extends javax.swing.JFrame {
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
+    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JPasswordField jPasswordField1;
     private javax.swing.JTextField jTextField1;
     // End of variables declaration//GEN-END:variables

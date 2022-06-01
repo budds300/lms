@@ -122,13 +122,15 @@ public class Issue extends javax.swing.JFrame {
         // TODO add your handling code here:
         //gathers all information keyed in the text fields
          
-        SimpleDateFormat dFormat =new SimpleDateFormat("dd-mm-yyyy");
+        SimpleDateFormat dFormat =new SimpleDateFormat("dd-MM-yyyy");
         String bookID = jTextField1.getText();
         String studentID = jTextField2.getText();
         
         String issueDate = dFormat.format(jDateChooser1.getDate());
         String dueDate = dFormat.format(jDateChooser2.getDate());
         String returnBook = "No";
+        String active = "Yes";
+        int penalty = 0;
         // connects to database
         try{
             Connection con =ConnectionProvider.getCon();
@@ -137,7 +139,7 @@ public class Issue extends javax.swing.JFrame {
             if(rs.next()){ // if the book ID exists then:
                 ResultSet rsl=st.executeQuery("select *from student where studentID='"+studentID+"'");// Goes to the database and selects existing student ID from its table
                 if(rsl.next()){ // if the student ID exists then:
-                   st.executeUpdate("insert into issue values('"+bookID+"','"+studentID+"','"+issueDate+"','"+returnBook+"','"+dueDate+"')" ); // Inserts the data you keyed in to the database
+                   st.executeUpdate("insert into issue values('"+bookID+"','"+studentID+"','"+issueDate+"','"+returnBook+"','"+dueDate+"','"+active+"','"+penalty+"')" ); // Inserts the data you keyed in to the database
                    JOptionPane.showConfirmDialog(null,"Book successfully issued"); // Messege deterimnes its successfull
                    dispose(); // close form
                    new Issue().setVisible(true); // reopens it (refreshes the file)
